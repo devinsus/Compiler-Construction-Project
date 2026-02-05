@@ -61,10 +61,10 @@ yylineno = 1;
 "-" {return OPER_SUB;}
 "*" {return OPER_MUL;}
 "/" {return OPER_DIV;}
-"<" {return OPER_LT;}
-">" {return OPER_GT;}
 ">=" {return OPER_GTE;}
 "<=" {return OPER_LTE;}
+"<" {return OPER_LT;}
+">" {return OPER_GT;}
 "==" {return OPER_EQ;}
 "!=" {return OPER_NEQ;}
 "=" {return OPER_ASGN;}
