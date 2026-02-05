@@ -18,7 +18,7 @@ int processString(); //TODO: Implement this function to check for illegal escape
 
 newline         \n
 whitespace      [ \t\r\n]+
-integer        	0 | [1-9][0-9]*
+integer        	[0-9]*
 character       '[^'\n]'
 
 /* String can contain any characters between the double quotes other than a newline or
