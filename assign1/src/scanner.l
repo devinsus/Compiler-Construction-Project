@@ -1,19 +1,25 @@
-
 /* definitions */
 
 %{
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "tokendef.h"
 
+ /* integers to track line and column numbers */
 int scancol = 1;
 int yycol = 1;
 int scanlineno = 1;
 
-char* yyerror;
+ /* char pointer to pass error messages to driver.c */
+char *yyerror;
 
-void updateCol(); //TODO: Implement this function to keep track of column numbers
-void countLines(); //TODO: Implement this function to keep track of line numbers
-int processString(); //TODO: Implement this function to check for illegal escape sequences in string literals and print out escape sequences correctly.
+ /* TODO: functions to update line and column numbers */
+void updateCol();
+void countLines();
+
+ /* TODO: function to process a string literal */
+int processString();
+
 %}
 
 newline         \n
@@ -21,17 +27,13 @@ whitespace      [ \t\r\n]+
 integer        	[0-9]*
 character       '[^'\n]'
 
-/* String can contain any characters between the double quotes other than a newline or
-// unescaped doublequotes.
+ /* String can contain any characters between the double quotes */
+ /* other than a newline or unescaped doublequotes */
 */
-string       "([^\n"\\]|\\[t"\\])*" //Matches valid strings and escape sequences expect for newlines
+string        \"([^\n\"\\]|\\[^n])*\"
 
-/* multiline string has \n somewhere in the middle */
-multlnstring "([^\n"\\]|\\[t"\\])*\\n([^\n"\\]|\\[nt"\\])*"
 
-/* If the end quote is found, one of the two regexes above will be matched. Otherwise,
-// the string is unterminated.
-*/
+ /* If the end quote is not found in the same line the string is unterminated */
 untermstring //TODO
 
 comment         //TODO
@@ -47,8 +49,10 @@ yylineno = 1;
 
  /* rules */
 
- /* Keywords */;
-"if" {return KWD_IF;}
+ /* Keywords */
+ /* TODO: Support all keywords in mC */
+
+ "if" {return KWD_IF;}
 "else" {return KWD_ELSE;}
 "while" {return KWD_WHILE;}
 "int" {return KWD_INT;}
@@ -56,7 +60,10 @@ yylineno = 1;
 "char" {return KWD_CHAR;}
 "return" {return KWD_RETURN;}
 "void" {return KWD_VOID;}
- /* Operators */;
+
+ /* Operators */
+ /* TODO: Support all operators in mC */
+
 "+" {return OPER_ADD;}
 "-" {return OPER_SUB;}
 "*" {return OPER_MUL;}
@@ -68,6 +75,7 @@ yylineno = 1;
 "==" {return OPER_EQ;}
 "!=" {return OPER_NEQ;}
 "=" {return OPER_ASGN;}
+/* FINISH OPERATORS */
 
  /* Identifiers */;
 {identifier}    //TODO
@@ -79,14 +87,13 @@ yylineno = 1;
 {character}     //TODO
 {string}        {updateCol(); return processString();}
 {untermstring}  {updateCol(); yyerror = "Unterminated string"; return ERROR;}
-{multlnstring}  {updateCol(); countLines(); yyerror = "String spans multiple lines"; return ERROR;} // Catching a multi-line string and generating an error.
 
- /* Comments */;
+ /* Comments */
 {comment}       //TODO
 {untermcomment} //TODO
 {multlncomment} //TODO
 
- /* Other */;
+ /* Other */
 {newline}       //TODO
 {whitespace}    //TODO
 .               {return ILLEGAL_TOK;}
@@ -95,15 +102,24 @@ yylineno = 1;
 
 /* user routines */
 
+/* TODO:
+Implement this function to keep track of column numbers
+*/
 void updateCol(){
-	//TODO: Keep track of column number
 }
 
+/* TODO:
+Implement this function to keep track of line numbers
+*/
 void countLines(){
-	//TODO: Count the number of lines
 }
 
-
+/* TODO: ?? DO THIS HELLO GIT
+Implement this function to
+check for illegal escape sequences in string literals
+and
+convert valid escape sequences into escaped characters
+(string[0] == '\\' and string[1] == 'n', then string[0] should be '\n')
+*/
 int processString(){
-	// TODO: Process a string literal and return the appropriate microsyntax.
 }
