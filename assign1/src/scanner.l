@@ -24,10 +24,10 @@ character       '[^'\n]'
 /* String can contain any characters between the double quotes other than a newline or
 // unescaped doublequotes.
 */
-string       //TODO
+string       "([^\n"\\]|\\[t"\\])*" //Matches valid strings and escape sequences expect for newlines
 
 /* multiline string has \n somewhere in the middle */
-multlnstring //TODO
+multlnstring "([^\n"\\]|\\[t"\\])*\\n([^\n"\\]|\\[nt"\\])*"
 
 /* If the end quote is found, one of the two regexes above will be matched. Otherwise,
 // the string is unterminated.
