@@ -16,18 +16,18 @@ void countLines(); //TODO: Implement this function to keep track of line numbers
 int processString(); //TODO: Implement this function to check for illegal escape sequences in string literals and print out escape sequences correctly.
 %}
 
-newline         //TODO
-whitespace      //TODO
-integer         //TODO
-character       //TODO
+newline         \n
+whitespace      [ \t\r\n]+
+integer        	[0-9]*
+character       '[^'\n]'
 
 /* String can contain any characters between the double quotes other than a newline or
 // unescaped doublequotes.
 */
-string       //TODO
+string       "([^\n"\\]|\\[t"\\])*" //Matches valid strings and escape sequences expect for newlines
 
 /* multiline string has \n somewhere in the middle */
-multlnstring //TODO
+multlnstring "([^\n"\\]|\\[t"\\])*\\n([^\n"\\]|\\[nt"\\])*"
 
 /* If the end quote is found, one of the two regexes above will be matched. Otherwise,
 // the string is unterminated.
@@ -48,9 +48,26 @@ yylineno = 1;
  /* rules */
 
  /* Keywords */;
-//TODO: Support all keywords in mC
+"if" {return KWD_IF;}
+"else" {return KWD_ELSE;}
+"while" {return KWD_WHILE;}
+"int" {return KWD_INT;}
+"string" {return KWD_STRING;}
+"char" {return KWD_CHAR;}
+"return" {return KWD_RETURN;}
+"void" {return KWD_VOID;}
  /* Operators */;
-//TODO: Support all operators in mC
+"+" {return OPER_ADD;}
+"-" {return OPER_SUB;}
+"*" {return OPER_MUL;}
+"/" {return OPER_DIV;}
+">=" {return OPER_GTE;}
+"<=" {return OPER_LTE;}
+"<" {return OPER_LT;}
+">" {return OPER_GT;}
+"==" {return OPER_EQ;}
+"!=" {return OPER_NEQ;}
+"=" {return OPER_ASGN;}
 
  /* Identifiers */;
 {identifier}    //TODO
