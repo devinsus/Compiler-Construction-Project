@@ -26,7 +26,7 @@ newline         \n
 whitespace      [ \t\r\n]+
 integer        	0|[1-9][0-9]*
 integerlead0    0[0-9]+
-character       '[^'\n]'
+character       '[^\n]|.'
 
  /* String can contain any characters between the double quotes */
  /* other than a newline or unescaped doublequotes */
@@ -41,8 +41,8 @@ comment         \/\/([^\n])*
 multlncomment   \/\*(.|\n)*\*\/
 untermcomment   //TODO
 
-identifier      //TODO
-illidentifier   //TODO: regular expression for an illegal identifier
+identifier      [a-zA-z]([a-zA-Z0-9])*
+illidentifier   [0-9]([a-zA-Z0-9])*
 
 yylineno = 1;
 
@@ -53,33 +53,39 @@ yylineno = 1;
  /* Keywords */
  /* TODO: Support all keywords in mC */
 
-"if" {return KWD_IF;}
-"else" {return KWD_ELSE;}
-"while" {return KWD_WHILE;}
-"int" {return KWD_INT;}
-"string" {return KWD_STRING;}
-"char" {return KWD_CHAR;}
-"return" {return KWD_RETURN;}
-"void" {return KWD_VOID;}
+"if" {updateCol(); return KWD_IF;}
+"else" {updateCol(); return KWD_ELSE;}
+"while" {updateCol(); return KWD_WHILE;}
+"int" {updateCol(); return KWD_INT;}
+"string" {updateCol(); return KWD_STRING;}
+"char" {updateCol(); return KWD_CHAR;}
+"return" {updateCol(); return KWD_RETURN;}
+"void" {updateCol(); return KWD_VOID;}
 
  /* Operators */
  /* TODO: Support all operators in mC */
 
-"+" {return OPER_ADD;}
-"-" {return OPER_SUB;}
-"*" {return OPER_MUL;}
-"/" {return OPER_DIV;}
-">=" {return OPER_GTE;}
-"<=" {return OPER_LTE;}
-"<" {return OPER_LT;}
-">" {return OPER_GT;}
-"==" {return OPER_EQ;}
-"!=" {return OPER_NEQ;}
-"=" {return OPER_ASGN;}
+"+" {updateCol(); return OPER_ADD;}
+"-" {updateCol(); return OPER_SUB;}
+"*" {updateCol(); return OPER_MUL;}
+"/" {updateCol(); return OPER_DIV;}
+"<" {updateCol(); return OPER_LT;}
+">" {updateCol(); return OPER_GT;}
+">=" {updateCol(); return OPER_GTE;}
+"<=" {updateCol(); return OPER_LTE;}
+"==" {updateCol(); return OPER_EQ;}
+"!=" {updateCol(); return OPER_NEQ;}
+"=" {updateCol(); return OPER_ASGN;}
+"@" {updateCol(); return OPER_AT;}
+"++" {updateCol(); return OPER_INC;}
+"--" {updateCol(); return OPER_DEC;}
+"&&" {updateCol(); return OPER_AND;}
+"||" {updateCol(); return OPER_OR;}
+
 /* FINISH OPERATORS */
 
  /* Identifiers */;
-{identifier}    //TODO
+{identifier}    {}
 {illidentifier} //TODO
 
  /* Constants */;
@@ -107,12 +113,17 @@ yylineno = 1;
 Implement this function to keep track of column numbers
 */
 void updateCol(){
+    yycol = scancol;
+    ++scancol;
 }
 
 /* TODO:
 Implement this function to keep track of line numbers
 */
 void countLines(){
+    yycol=scancol;
+    scancol = 1;
+    ++yylineno;
 }
 
 /* TODO: ?? DO THIS HELLO GIT
