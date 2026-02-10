@@ -33,9 +33,7 @@ character       '[^'\n]'
 string        \"([^\n"]|\\.)*\"
 
 
-/* If the end quote is not found in the same line the string is unterminated */
 
-untermstring \"([^\n])*\n
 
 comment         \/\/([^\n])*
 multlncomment   \/\*(.|\n)*\*\/
