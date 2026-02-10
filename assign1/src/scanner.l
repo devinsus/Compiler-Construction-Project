@@ -16,14 +16,15 @@ char *yyerror;
  /* TODO: functions to update line and column numbers */
 void updateCol();
 void countLines();
+void countMultLineToken();
 
  /* TODO: function to process a string literal */
 int processString();
 
 %}
 
-newline         \n
-whitespace      [ \t\r\n]+
+newline         [\r]?[\n]
+whitespace      [ \t]+
 integer        	0|[1-9][0-9]*
 integerlead0    0[0-9]+
 character       '[^\n]|.'
@@ -35,11 +36,11 @@ string        \"([^\n"]|\\.)*\"
 
 /* If the end quote is not found in the same line the string is unterminated */
 
-untermstring \"([^\n])*\n
+untermstring \"([^\"\n\\]|\\.)*\n
 
 comment         \/\/([^\n])*
 multlncomment   \/\*(.|\n)*\*\/
-untermcomment   //TODO
+untermcomment   \/\*(.|\n)*
 
 identifier      [a-zA-z]([a-zA-Z0-9])*
 illidentifier   [0-9]([a-zA-Z0-9])*
@@ -82,10 +83,10 @@ yylineno = 1;
 "&&" {updateCol(); return OPER_AND;}
 "||" {updateCol(); return OPER_OR;}
 
-/* FINISH OPERATORS */
+ /* FINISH OPERATORS */
 
  /* Identifiers */;
-{identifier}    {}
+{identifier}    
 {illidentifier} //TODO
 
  /* Constants */;
@@ -96,13 +97,13 @@ yylineno = 1;
 {untermstring}  {updateCol(); yyerror = "Unterminated string"; return ERROR;}
 
  /* Comments */
-{comment}       //TODO
-{untermcomment} //TODO
-{multlncomment} //TODO
+{comment}       {updateCol();}
+{untermcomment} {updateCol(); yyerror = "Unterminated comment"; return ERROR;}
+{multlncomment} {countLine(); updateCol();}
 
  /* Other */
-{newline}       //TODO
-{whitespace}    //TODO
+{newline}       {countLines();}
+{whitespace}    {updateCol();}
 .               {return ILLEGAL_TOK;}
 
 %%
@@ -126,7 +127,13 @@ void countLines(){
     ++yylineno;
 }
 
-/* TODO: ?? DO THIS HELLO GIT
+void countMultLineToken(){
+    for(int i = 0; i < yyleng; i++){
+        
+    }
+}
+
+/* TODO: 
 Implement this function to
 check for illegal escape sequences in string literals
 and
@@ -134,7 +141,5 @@ convert valid escape sequences into escaped characters
 (string[0] == '\\' and string[1] == 'n', then string[0] should be '\n')
 */
 int processString(){
-    for(int i = 0; i < strlen(string); i++){
-        
-    }
+    return 0;
 }
