@@ -42,7 +42,7 @@ comment         \/\/([^\n])*
 multlncomment   \/\*(.|\n)*\*\/
 untermcomment   \/\*(.|\n)*
 
-identifier      [a-zA-z]([a-zA-Z0-9])*
+identifier      [a-zA-Z]([a-zA-Z0-9])*
 illidentifier   [0-9]([a-zA-Z0-9])*
 
 yylineno = 1;
@@ -104,6 +104,14 @@ yylineno = 1;
 {multlncomment} {countMultLineToken(); updateCol();}
 
  /* Other */
+"[" {updateCol(); return LSQ_BRKT;} 
+"]" {updateCol(); return RSQ_BRKT;}
+"{" {updateCol(); return LCRLY_BRKT;}
+"}" {updateCol(); return RCRLY_BRKT;}
+"(" {updateCol(); return LPAREN;}
+")" {updateCol(); return RPAREN;}
+"," {updateCol(); return COMMA;}
+";" {updateCol(); return SEMICLN;}
 {newline}       {countLines();}
 {whitespace}    {updateCol();}
 .               {return ILLEGAL_TOK;}
@@ -117,7 +125,7 @@ Implement this function to keep track of column numbers
 */
 void updateCol(){
     yycol = scancol;
-    ++scancol;
+    scancol += yyleng;
 }
 
 /* TODO:
