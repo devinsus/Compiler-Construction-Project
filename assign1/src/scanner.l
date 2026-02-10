@@ -30,19 +30,10 @@ character       '[^'\n]'
 
  /* String can contain any characters between the double quotes */
  /* other than a newline or unescaped doublequotes */
-<<<<<<< HEAD
-*/
-string        \"([^\n\"\\]|\\[^n])*\"
-
-
- /* If the end quote is not found in the same line the string is unterminated */
-untermstring //TODO
-=======
 string        \"([^\n"]|\\.)*\"
 
 
 /* If the end quote is not found in the same line the string is unterminated */
->>>>>>> devin.v.1
 
 untermstring \"([^\n])*\n
 
@@ -62,11 +53,7 @@ yylineno = 1;
  /* Keywords */
  /* TODO: Support all keywords in mC */
 
-<<<<<<< HEAD
- "if" {return KWD_IF;}
-=======
 "if" {return KWD_IF;}
->>>>>>> devin.v.1
 "else" {return KWD_ELSE;}
 "while" {return KWD_WHILE;}
 "int" {return KWD_INT;}
@@ -136,10 +123,7 @@ convert valid escape sequences into escaped characters
 (string[0] == '\\' and string[1] == 'n', then string[0] should be '\n')
 */
 int processString(){
-<<<<<<< HEAD
-=======
     for(int i = 0; i < strlen(string); i++){
         
     }
->>>>>>> devin.v.1
 }
