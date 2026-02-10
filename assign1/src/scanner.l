@@ -27,7 +27,7 @@ newline         [\r]?[\n]
 whitespace      [ \t]+
 integer        	0|[1-9][0-9]*
 integerlead0    0[0-9]+
-character       '[^\n]|.'
+character       '([^\n'])'
 
  /* String can contain any characters between the double quotes */
  /* other than a newline or unescaped doublequotes */
@@ -82,6 +82,8 @@ yylineno = 1;
 "--" {updateCol(); return OPER_DEC;}
 "&&" {updateCol(); return OPER_AND;}
 "||" {updateCol(); return OPER_OR;}
+"!" {updateCol(); return OPER_NOT;}
+"%" {updateCol(); return OPER_MOD;}
 
  /* FINISH OPERATORS */
 
@@ -99,7 +101,7 @@ yylineno = 1;
  /* Comments */
 {comment}       {updateCol();}
 {untermcomment} {updateCol(); yyerror = "Unterminated comment"; return ERROR;}
-{multlncomment} {countLine(); updateCol();}
+{multlncomment} {countMultLineToken(); updateCol();}
 
  /* Other */
 {newline}       {countLines();}
@@ -128,9 +130,15 @@ void countLines(){
 }
 
 void countMultLineToken(){
-    for(int i = 0; i < yyleng; i++){
-        
+    for(size_t i = 0; i < yyleng; i++){
+        if(yytext[i] == '\n'){
+            ++yylineno;
+            scancol = 1;
+        } else{
+            scancol++;
+        }
     }
+    yycol = scancol;
 }
 
 /* TODO: 
