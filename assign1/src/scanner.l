@@ -90,12 +90,12 @@ yylineno = 1;
  /* FINISH OPERATORS */
 
  /* Identifiers */;
-{identifier}    
-{illidentifier} //TODO
+{identifier}  {updateCol(); return ID;}  
+{illidentifier} {updateCol(); yyerror = "Illegal token"; return ERROR;}
 
  /* Constants */;
-{integer}       //TODO
-{integerlead0}  //TODO: "Integers may not have leading zeros"
+{integer}       {updateCol(); return INTCONST;}
+{integerlead0}  {updateCol(); yyerror = "Illegal token"; return ERROR;}
 {character}     //TODO
 {string}        {updateCol(); return processString();}
 {untermstring}  {updateCol(); yyerror = "Unterminated string"; return ERROR;}
