@@ -157,5 +157,29 @@ convert valid escape sequences into escaped characters
 (string[0] == '\\' and string[1] == 'n', then string[0] should be '\n')
 */
 int processString(){
-    return 0;
+    char *newtxt = malloc(yyleng);
+    int readi = 1;
+    int writei = 0;
+    
+    for(; readi < yyleng - 1; readi++){
+        if(yytext[readi] == '\\'){
+            readi++;
+            switch(yytext[readi]){
+                case 'n': newtxt[writei++] = '\n'; break;
+                case 't': newtxt[writei++] = '\t'; break;
+                case '"': newtxt[writei++] = '"'; break;
+                case '\\': newtxt[writei++] = '\\'; break;
+                default:
+                    free(newtxt);
+                    yyerror = "Unrecognized escape character in String";
+                    return ERROR;
+            }
+        } else {
+            newtxt[writei++] = yytext[readi];
+        }
+    }
+    newtxt[writei] = '\0';
+    strcpy(yytext, newtxt);
+    free(newtxt);
+    return STRCONST;
 }
