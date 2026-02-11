@@ -39,8 +39,8 @@ string        \"([^\n"]|\\.)*\"
 untermstring \"([^\"\n\\]|\\.)*\n
 
 comment         \/\/([^\n])*
-multlncomment   \/\*(.|\n)*\*\/
-untermcomment   \/\*(.|\n)*
+multlncomment   \/\*([^*]|\*+[^*/])*\*+\/
+untermcomment   \/\*([^*]|\*+[^*\/])*
 
 identifier      [a-zA-Z]([a-zA-Z0-9])*
 illidentifier   [0-9]([a-zA-Z0-9])*
