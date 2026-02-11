@@ -38,7 +38,7 @@ string        \"([^\n"]|\\.)*\"
 
 /* If the end quote is not found in the same line the string is unterminated */
 
-untermstring \"([^\"\n\\]|\\.)*\n
+untermstring \"([^\"\n\\]|\\.)*
 
 comment         \/\/([^\n])*
 multlncomment   \/\*([^*]|\*+[^*/])*\*+\/
@@ -89,16 +89,18 @@ yylineno = 1;
 
  /* FINISH OPERATORS */
 
+{integer}       {updateCol(); return INTCONST;}
+{integerlead0}  {updateCol(); yyerror = "Illegal token"; return ERROR;}
+
  /* Identifiers */;
 {identifier}  {updateCol(); return ID;}  
 {illidentifier} {updateCol(); yyerror = "Illegal token"; return ERROR;}
 
  /* Constants */;
-{integer}       {updateCol(); return INTCONST;}
-{integerlead0}  {updateCol(); yyerror = "Illegal token"; return ERROR;}
-{character}     //TODO
+
+{character}     {updateCol(); return CHARCONST;}
 {string}        {updateCol(); return processString();}
-{untermstring}  {updateCol(); yyerror = "Unterminated string"; return ERROR;}
+{untermstring}  {updateCol(); yyerror = "Unterminated string constant"; return ERROR;}
 
  /* Comments */
 {comment}       {updateCol();}
