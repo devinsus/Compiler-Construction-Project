@@ -5,7 +5,9 @@ CFLAGS:=-I./src -std=gnu99 -Og -ggdb3 -Wall -Wextra
 #LEX:=lex
 #LEXFLAG:=-ll
 LEX:=flex
-LEXFLAG:=-lfl
+#removed -lfl because i do not have flex runtime library installed on my machine
+LEXFLAG:=
+#LEXFLAG:=-lfl
 
 OBJDIR:=obj
 OBJS:=$(OBJDIR)/lex.yy.o $(OBJDIR)/driver.o

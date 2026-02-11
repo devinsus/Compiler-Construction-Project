@@ -22,6 +22,8 @@ void countMultLineToken();
 int processString();
 
 %}
+/*necessary for compilation of scanner because of not having home brew installed*/
+%option noyywrap
 
 newline         [\r]?[\n]
 whitespace      [ \t]+
