@@ -87,11 +87,11 @@ yylineno = 1;
 
  /* Identifiers */;
 {identifier}  {updateCol(); return ID;}  
-{illidentifier} {updateCol(); strcpy(yyerror, "Illegal token"); return ERROR;}
+{illidentifier} {updateCol(); yyerror = "Illegal token"; return ERROR;}
 
  /* Constants */;
 {integer}       {updateCol(); return INTCONST;}
-{integerlead0}  {updateCol(); strcpy(yyerror, "Illegal token"); return ERROR;}
+{integerlead0}  {updateCol(); yyerror = "Illegal token"; return ERROR;}
 {character}     //TODO
 {string}        {updateCol(); return processString();}
 {untermstring}  {updateCol(); yyerror = "Unterminated string"; return ERROR;}
