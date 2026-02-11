@@ -42,7 +42,7 @@ comment         \/\/([^\n])*
 multlncomment   \/\*(.|\n)*\*\/
 untermcomment   \/\*(.|\n)*
 
-identifier      [a-zA-z]([a-zA-Z0-9])*
+identifier      [a-zA-Z]([a-zA-Z0-9])*
 illidentifier   [0-9]([a-zA-Z0-9])*
 
 yylineno = 1;
@@ -86,12 +86,12 @@ yylineno = 1;
  /* FINISH OPERATORS */
 
  /* Identifiers */;
-{identifier}    
-{illidentifier} //TODO
+{identifier}  {updateCol(); return ID;}  
+{illidentifier} {updateCol(); strcpy(yyerror, "Illegal token"); return ERROR;}
 
  /* Constants */;
-{integer}       //TODO
-{integerlead0}  //TODO: "Integers may not have leading zeros"
+{integer}       {updateCol(); return INTCONST;}
+{integerlead0}  {updateCol(); strcpy(yyerror, "Illegal token"); return ERROR;}
 {character}     //TODO
 {string}        {updateCol(); return processString();}
 {untermstring}  {updateCol(); yyerror = "Unterminated string"; return ERROR;}
